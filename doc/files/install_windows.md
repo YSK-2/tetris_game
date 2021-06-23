@@ -3,7 +3,12 @@ docker for windowsを使います。<br>
 
 ### step0. DockerDesktopのインストール 
 
-[DockerDeskop](https://docs.docker.com/docker-for-windows/install) をインストール<br>
+以下を参照する。<br>
+[DockerDeskop](https://docs.docker.com/docker-for-windows/install) <br>
+[Windows10用Windows Subsystem for Linuxのインストール ガイド](https://docs.microsoft.com/ja-jp/windows/wsl/install-win10)
+
+以下にインストール時のトラブルシューティングをまとめました。<br>
+[FAQ/Windows Docker install時のトラブルシューティング](https://github.com/seigot/tetris_game/blob/master/doc/files/FAQ.md#windows-docker-install%E6%99%82%E3%81%AE%E3%83%88%E3%83%A9%E3%83%96%E3%83%AB%E3%82%B7%E3%83%A5%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0)
 
 ### step1. パワーシェル上でコンテナを起動する<br>
 

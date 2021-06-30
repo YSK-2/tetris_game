@@ -1,47 +1,46 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
+＃！/ usr / bin / python3
+＃-*-コーディング：utf-8-*-
+#test
+ 日時 からインポート 日時
+ pprintをインポートする
+ ランダムにインポート
 
-from datetime import datetime
-import pprint
-import random
+クラス Block_Controller（オブジェクト）：
 
-class Block_Controller(object):
+    ＃initパラメータ
+    board_backboard  =  0
+    board_data_width  =  0
+    board_data_height  =  0
+    ShapeNone_index  =  0
+    CurrentShape_class  =  0
+    NextShape_class  =  0
 
-    # init parameter
-    board_backboard = 0
-    board_data_width = 0
-    board_data_height = 0
-    ShapeNone_index = 0
-    CurrentShape_class = 0
-    NextShape_class = 0
+    ＃GetNextMoveはメイン関数です。
+    ＃入力
+    ＃GameStatus：このデータにはすべてのフィールドステータスが含まれます。 
+    ＃詳細については、内部のGameStatusデータを参照してください。
+    ＃出力
+    ＃nextMove：このデータには、次の形状の位置とその他の位置が含まれます。
+    ＃Noneを返す場合は、nextMoveに何もしません。
+    def  GetNextMove（self、nextMove、GameStatus）：
 
-    # GetNextMove is main function.
-    # input
-    #    GameStatus : this data include all field status, 
-    #                 in detail see the internal GameStatus data.
-    # output
-    #    nextMove : this data include next shape position and the other,
-    #               if return None, do nothing to nextMove.
-    def GetNextMove(self, nextMove, GameStatus):
+        t1  = 日時。今（）
 
-        t1 = datetime.now()
+        ＃GameStatusを印刷する
+        印刷（"=============================================== ==> "）
+        pprint。pprint（GameStatus、width  =  61、compact  =  True）
 
-        # print GameStatus
-        print("=================================================>")
-        pprint.pprint(GameStatus, width = 61, compact = True)
+        ＃最適なnextMoveを検索->
+        ＃ランダムサンプル
+        nextMove [ "strategy" ] [ "direction" ] =  random。randint（0、4）
+        nextMove [ "strategy" ] [ "x" ] =  random。randint（0、9）
+        nextMove [ "strategy" ] [ "y_operation" ] =  1
+        nextMove [ "strategy" ] [ "y_moveblocknum" ] =  random。randint（1、8）
+        ＃最適なnextMoveを検索<-
 
-        # search best nextMove -->
-        # random sample
-        nextMove["strategy"]["direction"] = random.randint(0,4)
-        nextMove["strategy"]["x"] = random.randint(0,9)
-        nextMove["strategy"]["y_operation"] = 1
-        nextMove["strategy"]["y_moveblocknum"] = random.randint(1,8)
-        # search best nextMove <--
+        ＃nextMoveを返す
+        印刷（"===" 、日時。今（）-  T1）
+        印刷（nextMove）
+         nextMoveに戻る
 
-        # return nextMove
-        print("===", datetime.now() - t1)
-        print(nextMove)
-        return nextMove
-
-BLOCK_CONTROLLER = Block_Controller()
-
+BLOCK_CONTROLLER  =  Block_Controller（）

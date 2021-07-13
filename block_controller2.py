@@ -1,12 +1,13 @@
 #!/usr/bin/python3
-
 # -*- coding: utf-8 -*-
 
 from datetime import datetime # To pick up date
 import pprint # To customize output
 import copy # To copy objects: "copy" does not copy object's contents: the copy has contents referencing to the same of copied one.
             # "deepCopy" copies object's contents too: the copy has contents that does not reference to the copied one.
+
 class Block_Controller(object): # object is not necessary (to use python2): Block_controller() is also OK
+
     # init parameter
     board_backboard = 0
     board_data_width = 0
@@ -14,6 +15,7 @@ class Block_Controller(object): # object is not necessary (to use python2): Bloc
     ShapeNone_index = 0
     CurrentShape_class = 0
     NextShape_class = 0
+
     # GetNextMove is main function.
     # input
     #    nextMove : nextMove structure which is empty.
@@ -22,10 +24,13 @@ class Block_Controller(object): # object is not necessary (to use python2): Bloc
     # output
     #    nextMove : nextMove structure which includes next shape position and the other.
     def GetNextMove(self, nextMove, GameStatus):
+
         t1 = datetime.now()
+
         # print GameStatus
         print("=================================================>")
         pprint.pprint(GameStatus, width = 61, compact = True)
+
         # get data from GameStatus
         # current shape info
         CurrentShapeDirectionRange = GameStatus["block_info"]["currentShape"]["direction_range"] # reference dictionary type list
@@ -39,6 +44,7 @@ class Block_Controller(object): # object is not necessary (to use python2): Bloc
         self.board_data_width = GameStatus["field_info"]["width"]
         self.board_data_height = GameStatus["field_info"]["height"]
         self.ShapeNone_index = GameStatus["debug_info"]["shape_info"]["shapeNone"]["index"]
+
         # search best nextMove -->
         strategy = None # Initialize
         LatestEvalValue = -100000
@@ -57,9 +63,9 @@ class Block_Controller(object): # object is not necessary (to use python2): Bloc
                     for x1 in range(x1Min, x1Max):
                         # get next board Data
                         boardNext = self.getBoard(board, self.NextShape_class, direction1, x1) 
-
+        
                         # evaluate board
-                                                EvalValue = self.calcEvaluationValueSample(boardNext, offsetFL)
+                        EvalValue = self.calcEvaluationValueSample(boardNext, offsetFL)
                         # update best move
                         if EvalValue > LatestEvalValue:
                             strategy = (direction0, x0, 1, 1)
@@ -75,6 +81,7 @@ class Block_Controller(object): # object is not necessary (to use python2): Bloc
                 ###            strategy = (direction0, x0, 1, 1)
                 ###            LatestEvalValue = EvalValue
                 # search best nextMove <--
+
         print("===", datetime.now() - t1)
         nextMove["strategy"]["direction"] = strategy[0]
         nextMove["strategy"]["x"] = strategy[1]
@@ -83,6 +90,7 @@ class Block_Controller(object): # object is not necessary (to use python2): Bloc
         print(nextMove)
         print("###### SAMPLE CODE ######")
         return nextMove
+
     def getSearchXRange(self, Shape_class, direction):
         #
         # get x range from shape direction.
@@ -91,12 +99,14 @@ class Block_Controller(object): # object is not necessary (to use python2): Bloc
         xMin = -1 * minX
         xMax = self.board_data_width - maxX
         return xMin, xMax
+
     def getShapeCoordArray(self, Shape_class, direction, x, y):
         #
         # get coordinate array by given shape.
         #
         coordArray = Shape_class.getCoords(direction, x, y) # get array from shape direction, x, y.
         return coordArray
+
     def getBoard(self, board_backboard, Shape_class, direction, x):
         # 
         # get new board.
@@ -106,6 +116,7 @@ class Block_Controller(object): # object is not necessary (to use python2): Bloc
         board = copy.deepcopy(board_backboard)
         _board = self.dropDown(board, Shape_class, direction, x)
         return _board
+
     def dropDown(self, board, Shape_class, direction, x):
         # 
         # internal function of getBoard.
@@ -124,6 +135,7 @@ class Block_Controller(object): # object is not necessary (to use python2): Bloc
         # get new board
         _board = self.dropDownWithDy(board, Shape_class, direction, x, dy)
         return _board
+
     def dropDownWithDy(self, board, Shape_class, direction, x, dy):
         #
         # internal function of dropDown.
@@ -147,7 +159,8 @@ class Block_Controller(object): # object is not necessary (to use python2): Bloc
             if brocks == width:
                 preFullLines += 1
         return preFullLines
-def calcEvaluationValueSample(self, board, offsetFL=0):
+
+    def calcEvaluationValueSample(self, board, offsetFL=0):
         #
         # sample function of evaluate board.
         #
@@ -167,6 +180,7 @@ def calcEvaluationValueSample(self, board, offsetFL=0):
         holeConfirm = [0] * width
         ## number of horizontal changes
         horizontalChange = [0] * height
+
         ### check board
         # each y line
         for y in range(height - 1, 0, -1): # range(start, stop, step) from top line to bottom line.
@@ -189,6 +203,7 @@ def calcEvaluationValueSample(self, board, offsetFL=0):
 #                            horizontalChange[y] += 1
 #                    elif board[y * width + x - 1] == self.ShapeNone_index:
 #                        horizontalChange[y] += 1
+
             if hasBlock == True and hasHole == False: # at least one hole exists, hasHole will be true.
                 # filled with block
                 fullLines += 1
@@ -205,9 +220,11 @@ def calcEvaluationValueSample(self, board, offsetFL=0):
             elif hasBlock == False:
                 # no block line (and ofcourse no hole)
                 pass
+
         # nHoles
         for x in holeConfirm: # holeConfirm is an array whose element is a number of holes at Coord x.
             nHoles += abs(x)
+
         ### absolute differencial value of MaxY
         BlockMaxDy = []
         for i in range(len(BlockMaxY) - 1):
@@ -215,14 +232,17 @@ def calcEvaluationValueSample(self, board, offsetFL=0):
             BlockMaxDy += [val]
         for x in BlockMaxDy:
             absDy += abs(x)
+
         # number of horizontal changes
         numHorizontalChange = 0
         for y in horizontalChange:
             numHorizontalChange += y
+
         #### maxDy
         #maxDy = max(BlockMaxY) - min(BlockMaxY)
         #### maxHeight
         maxHeight = max(BlockMaxY) - fullLines
+
         ## statistical data
         #### stdY
         #if len(BlockMaxY) <= 0:
@@ -235,12 +255,13 @@ def calcEvaluationValueSample(self, board, offsetFL=0):
         #else:
         #    stdDY = math.sqrt(sum([y ** 2 for y in BlockMaxDy]) / len(BlockMaxDy) - (sum(BlockMaxDy) / len(BlockMaxDy)) ** 2)
 
+
         # calc Evaluation Value
         score = 0
-       if fullLines == 4:
+        if fullLines == 4:
             score = score + fullLines * 100
         elif fullLines > 0:
-                        score = score - 6/fullLines
+            score = score - 6/fullLines
         if offsetFL == -4:
             score = score - offsetFL * 100
         elif offsetFL < 0:
@@ -248,3 +269,15 @@ def calcEvaluationValueSample(self, board, offsetFL=0):
         score = score - nHoles * 10.0               # try not to make hole
         score = score - nIsolatedBlocks * 1.0      # try not to make isolated block
         score = score - absDy * 1.0                 # try to put block smoothly
+        #score = score - numHorizontalChange * 1.0
+        #score = score - maxDy * 0.3                # maxDy
+        if maxHeight > 16:
+            score = score - maxHeight * 5              # maxHeight
+        #score = score - stdY * 1.0                 # statistical data
+        #score = score - stdDY * 0.01               # statistical data
+
+        # print(score, fullLines, nHoles, nIsolatedBlocks, maxHeight, stdY, stdDY, absDy, BlockMaxY)
+        return score
+
+
+BLOCK_CONTROLLER_SAMPLE = Block_Controller()

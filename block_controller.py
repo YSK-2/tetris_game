@@ -8,7 +8,7 @@ import copy # To copy objects: "copy" does not copy object's contents: the copy 
 
 class Block_Controller(object): # object is not necessary (to use python2): Block_controller() is also OK
 
-    # init parameter
+    # init parameter 
     board_backboard = 0
     board_data_width = 0
     board_data_height = 0

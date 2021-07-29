@@ -234,9 +234,9 @@ class Block_Controller(object): # object is not necessary (to use python2): Bloc
             absDy += abs(x)
 
         # number of horizontal changes
-        numHorizontalChange = 0
-        for y in horizontalChange:
-            numHorizontalChange += y
+        #numHorizontalChange = 0
+        #for y in horizontalChange:
+        #    numHorizontalChange += y
 
         #### maxDy
         #maxDy = max(BlockMaxY) - min(BlockMaxY)
@@ -258,14 +258,16 @@ class Block_Controller(object): # object is not necessary (to use python2): Bloc
 
         # calc Evaluation Value
         score = 0
-        if fullLines == 4:
-            score = score + fullLines * 100
-        elif fullLines > 0:
-            score = score - 6/fullLines
-        if offsetFL == -4:
-            score = score - offsetFL * 100
-        elif offsetFL < 0:
-            score = score + 6/offsetFL
+        
+        #if fullLines == 4:
+        #    score = score + fullLines * 100
+        #elif fullLines > 0:
+        #    score = score - 6/fullLines
+        #if offsetFL == -4:
+        #    score = score - offsetFL * 100
+        #elif offsetFL < 0:
+        #    score = score + 6/offsetFL
+        score = score + fullLines * 10.0          #try to delete line    
         score = score - nHoles * 10.0               # try not to make hole
         score = score - nIsolatedBlocks * 1.0      # try not to make isolated block
         score = score - absDy * 1.0                 # try to put block smoothly
